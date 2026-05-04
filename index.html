@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shibō — Sushi & Japonesa · Cerdanyola del Vallès</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1208;
+    --paper: #faf7f2;
+    --cream: #f3ede0;
+    --gold: #b8892a;
+    --gold-light: #e8d5a3;
+    --red: #8b1a1a;
+    --muted: #6b5e4a;
+    --border: rgba(184,137,42,0.2);
+    --serif: 'Cormorant Garamond', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--ink);
+    color: var(--paper) !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2px;
+  }
+  .nav-cta:hover { background: var(--gold) !important; color: var(--paper) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+  .hero-text {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 4rem 6rem 6rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 2rem; height: 1px; background: var(--gold);
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-subtitle {
+    font-size: 1rem; color: var(--muted); line-height: 1.8;
+    max-width: 380px; margin-bottom: 3rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--ink); color: var(--paper);
+    padding: 0.875rem 2rem; font-size: 0.8rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; border-radius: 2px;
+    transition: background 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold); }
+  .btn-ghost {
+    color: var(--ink); font-size: 0.8rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--gold); }
+  .btn-ghost svg { width: 14px; height: 14px; }
+
+  .hero-visual {
+    position: relative; overflow: hidden;
+    background: var(--ink);
+  }
+  .hero-visual-inner {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 3rem;
+  }
+  .hero-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(184,137,42,0.04) 0, rgba(184,137,42,0.04) 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px;
+  }
+  .hero-visual-kanji {
+    font-family: var(--serif); font-size: 18rem; font-weight: 300;
+    color: rgba(184,137,42,0.07); position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    line-height: 1; pointer-events: none; user-select: none;
+  }
+  .hero-badges {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .hero-badge {
+    background: rgba(250,247,242,0.06);
+    border: 1px solid rgba(250,247,242,0.12);
+    color: rgba(250,247,242,0.8);
+    padding: 0.875rem 1.25rem;
+    font-size: 0.82rem; letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 0.75rem;
+    max-width: 280px;
+  }
+  .hero-badge-icon { color: var(--gold); font-size: 1rem; flex-shrink: 0; }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; right: 3rem;
+    writing-mode: vertical-rl; font-size: 0.7rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(250,247,242,0.3); z-index: 2;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-scroll::after {
+    content: ''; width: 1px; height: 3rem; background: rgba(184,137,42,0.4);
+  }
+
+  /* ── SECTION GLOBALS ── */
+  section { padding: 6rem 4rem; }
+  .section-header {
+    text-align: center; margin-bottom: 4rem;
+  }
+  .section-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .section-eyebrow::before,
+  .section-eyebrow::after {
+    content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold-light);
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300; line-height: 1.15;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ── INFO STRIP ── */
+  .info-strip {
+    background: var(--ink); color: var(--paper);
+    padding: 2rem 4rem;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2rem; border-top: 1px solid rgba(184,137,42,0.3);
+  }
+  .info-item { display: flex; flex-direction: column; gap: 0.25rem; }
+  .info-label {
+    font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .info-value { font-size: 0.9rem; color: rgba(250,247,242,0.85); }
+  .info-value a { color: inherit; text-decoration: none; }
+  .info-value a:hover { color: var(--gold); }
+
+  /* ── ABOUT ── */
+  .about { background: var(--cream); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: center; }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .about-stat {
+    padding: 1.25rem; border: 1px solid var(--border);
+    border-radius: 2px; background: var(--paper);
+  }
+  .about-stat-num {
+    font-family: var(--serif); font-size: 2.5rem; font-weight: 300; color: var(--gold);
+    line-height: 1;
+  }
+  .about-stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+  .about-text p { color: var(--muted); line-height: 1.9; margin-bottom: 1rem; }
+  .about-visual {
+    position: relative; height: 520px;
+    background: var(--ink); overflow: hidden; border-radius: 2px;
+  }
+  .about-visual-pattern {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      -45deg, rgba(184,137,42,0.05) 0, rgba(184,137,42,0.05) 1px, transparent 0, transparent 50%
+    );
+    background-size: 24px 24px;
+  }
+  .about-visual-text {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; padding: 2rem;
+  }
+  .about-visual-jp {
+    font-family: var(--serif); font-size: 7rem; font-weight: 300;
+    color: rgba(184,137,42,0.15); line-height: 1;
+    position: absolute;
+  }
+  .about-visual-quote {
+    font-family: var(--serif); font-size: 1.35rem; font-weight: 300;
+    font-style: italic; color: rgba(250,247,242,0.7); line-height: 1.6;
+    position: relative; z-index: 2; max-width: 260px;
+  }
+  .about-visual-quote::before {
+    content: '"'; font-size: 4rem; color: var(--gold); opacity: 0.4;
+    display: block; line-height: 1; margin-bottom: -0.5rem;
+  }
+
+  /* ── MENU ── */
+  .menu { background: var(--paper); }
+  .menu-tabs {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    gap: 0.5rem; margin-bottom: 3rem;
+  }
+  .menu-tab {
+    font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.5rem 1.25rem; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); cursor: pointer;
+    transition: all 0.2s; border-radius: 2px; font-family: var(--sans);
+  }
+  .menu-tab:hover { border-color: var(--gold); color: var(--gold); }
+  .menu-tab.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .menu-section { display: none; }
+  .menu-section.active { display: block; }
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .menu-item {
+    background: var(--paper); padding: 1.25rem 1.5rem;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 1rem; transition: background 0.15s;
+  }
+  .menu-item:hover { background: var(--cream); }
+  .menu-item-info { flex: 1; }
+  .menu-item-name {
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 400;
+    margin-bottom: 0.25rem;
+  }
+  .menu-item-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .menu-item-tags { display: flex; gap: 0.35rem; margin-top: 0.5rem; }
+  .tag {
+    font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 1px;
+  }
+  .tag-vegan { background: rgba(30,100,50,0.1); color: #1e6432; }
+  .tag-spicy { background: rgba(139,26,26,0.1); color: var(--red); }
+  .tag-veg { background: rgba(30,100,50,0.08); color: #2a7a40; }
+  .menu-item-price {
+    font-family: var(--serif); font-size: 1.1rem; font-weight: 300;
+    color: var(--gold); white-space: nowrap; flex-shrink: 0;
+  }
+  .menu-note {
+    text-align: center; margin-top: 2.5rem;
+    font-size: 0.83rem; color: var(--muted); font-style: italic;
+  }
+
+  /* ── OMAKASE highlight ── */
+  .omakase-banner {
+    background: var(--ink); padding: 3rem; margin-bottom: 1px;
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center; gap: 2rem;
+  }
+  .omakase-banner-title {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 300;
+    color: var(--gold); margin-bottom: 0.5rem;
+  }
+  .omakase-banner-desc { font-size: 0.85rem; color: rgba(250,247,242,0.6); line-height: 1.7; }
+  .omakase-options { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .omakase-opt {
+    text-align: center; background: rgba(184,137,42,0.1);
+    border: 1px solid rgba(184,137,42,0.25); padding: 1rem 1.5rem; min-width: 110px;
+  }
+  .omakase-opt-price {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--gold);
+  }
+  .omakase-opt-label { font-size: 0.72rem; color: rgba(250,247,242,0.5); margin-top: 0.2rem; }
+
+  /* ── HORARIO ── */
+  .hours { background: var(--cream); }
+  .hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .hours-table { width: 100%; border-collapse: collapse; }
+  .hours-table tr { border-bottom: 1px solid var(--border); }
+  .hours-table tr:last-child { border-bottom: none; }
+  .hours-table td { padding: 0.9rem 0; font-size: 0.9rem; }
+  .hours-table td:first-child { font-weight: 500; color: var(--ink); }
+  .hours-table td:last-child { text-align: right; color: var(--muted); }
+  .hours-closed { color: var(--red) !important; font-style: italic; }
+  .hours-contact { margin-top: 2.5rem; }
+  .hours-contact-title {
+    font-family: var(--serif); font-size: 1.4rem; font-weight: 300;
+    margin-bottom: 1.25rem;
+  }
+  .contact-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .contact-list li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.88rem; color: var(--muted); }
+  .contact-list li a { color: var(--gold); text-decoration: none; }
+  .contact-list li a:hover { text-decoration: underline; }
+  .contact-icon {
+    width: 28px; height: 28px; border-radius: 2px;
+    background: var(--border); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 0.75rem; color: var(--gold);
+  }
+  .map-embed {
+    width: 100%; height: 320px; border-radius: 2px;
+    border: 1px solid var(--border); overflow: hidden;
+    background: var(--ink); position: relative;
+  }
+  .map-embed iframe { width: 100%; height: 100%; border: none; }
+
+  /* ── REVIEWS ── */
+  .reviews { background: var(--paper); }
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .review-card {
+    border: 1px solid var(--border); padding: 1.75rem;
+    position: relative; transition: border-color 0.2s;
+  }
+  .review-card:hover { border-color: var(--gold); }
+  .review-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 0.75rem; letter-spacing: 2px; }
+  .review-text {
+    font-family: var(--serif); font-size: 1rem; font-weight: 300;
+    line-height: 1.75; color: var(--ink); margin-bottom: 1rem; font-style: italic;
+  }
+  .review-meta { font-size: 0.78rem; color: var(--muted); }
+  .review-meta strong { color: var(--ink); font-weight: 500; }
+
+  /* ── SOCIAL / CTA ── */
+  .social { background: var(--ink); color: var(--paper); text-align: center; padding: 5rem 4rem; }
+  .social-title {
+    font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300; margin-bottom: 1rem; color: var(--paper);
+  }
+  .social-title em { font-style: italic; color: var(--gold); }
+  .social-sub { font-size: 0.9rem; color: rgba(250,247,242,0.55); margin-bottom: 2.5rem; }
+  .social-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .social-link {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.5rem; border: 1px solid rgba(250,247,242,0.15);
+    color: rgba(250,247,242,0.75); text-decoration: none; font-size: 0.82rem;
+    letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.2s;
+  }
+  .social-link:hover {
+    border-color: var(--gold); color: var(--gold); background: rgba(184,137,42,0.06);
+  }
+  .social-handle { color: var(--gold); font-size: 1rem; margin-bottom: 2rem; letter-spacing: 0.05em; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #111009; color: rgba(250,247,242,0.4);
+    padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.78rem; border-top: 1px solid rgba(184,137,42,0.15);
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .footer-logo {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 300;
+    color: rgba(250,247,242,0.6); letter-spacing: 0.1em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up {
+    opacity: 0; animation: fadeUp 0.7s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.55s; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-text { padding: 3rem 1.5rem; }
+    .hero-visual { height: 300px; }
+    section { padding: 4rem 1.5rem; }
+    .info-strip { grid-template-columns: 1fr 1fr; padding: 2rem 1.5rem; gap: 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .about-visual { height: 280px; }
+    .hours-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .omakase-banner { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Shib<span>ō</span></a>
+  <ul class="nav-links">
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#carta">Carta</a></li>
+    <li><a href="#horario">Horario</a></li>
+    <li><a href="#opiniones">Opiniones</a></li>
+    <li><a href="tel:931377282" class="nav-cta">Pedir ahora</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <div class="hero-text">
+    <div class="hero-eyebrow fade-up">Cerdanyola del Vallès</div>
+    <h1 class="hero-title fade-up delay-1">
+      Cocina<br>japonesa<br><em>auténtica</em>
+    </h1>
+    <p class="hero-subtitle fade-up delay-2">
+      Sushi artesanal elaborado al momento con los mejores ingredientes. Takeaway, delivery y cenas en sala.
+    </p>
+    <div class="hero-actions fade-up delay-3">
+      <a href="tel:931377282" class="btn-primary">Llamar para pedir</a>
+      <a href="#carta" class="btn-ghost">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h12M8 2l6 6-6 6"/></svg>
+        Ver carta
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-pattern"></div>
+    <div class="hero-visual-kanji">寿</div>
+    <div class="hero-visual-inner">
+      <div class="hero-badges">
+        <div class="hero-badge">
+          <span class="hero-badge-icon">★</span>
+          Valoración 4,7 · 240+ pedidos
+        </div>
+        <div class="hero-badge">
+          <span class="hero-badge-icon">◆</span>
+          100% recomendado · Facebook
+        </div>
+        <div class="hero-badge">
+          <span class="hero-badge-icon">◈</span>
+          Ingredientes frescos cada día
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </div>
+</section>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-item">
+    <span class="info-label">Dirección</span>
+    <span class="info-value">
+      <a href="https://maps.google.com/?q=Carrer+Sant+Martí+93+Cerdanyola+del+Vallès" target="_blank">
+        Carrer Sant Martí 93
+      </a>
+    </span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Teléfono</span>
+    <span class="info-value"><a href="tel:931377282">931 37 72 82</a></span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Email</span>
+    <span class="info-value"><a href="mailto:shibo@shibo.es">shibo@shibo.es</a></span>
+  </div>
+  <div class="info-item">
+    <span class="info-label">Servicio</span>
+    <span class="info-value">Takeaway · Domicilio · Sala</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="nosotros">
+  <div class="about-grid">
+    <div>
+      <div class="section-eyebrow">Nuestra historia</div>
+      <h2 class="section-title">Arte y <em>pasión</em><br>por el sushi</h2>
+      <div class="about-text" style="margin-top:1.5rem;">
+        <p>En Shibō elaboramos cada pieza con mimo y precisión, siguiendo técnicas japonesas tradicionales adaptadas con creatividad propia. Desde nuestro local en el corazón de Cerdanyola, llevamos años siendo la referencia de sushi en el Vallès.</p>
+        <p>Nuestra carta fusiona lo clásico con lo innovador: desde nigiris flambeados hasta uramakis con foie, pasando por poke bowls frescos y gyozas artesanales. Cada mes presentamos nuestra <em>Estrella del Mes</em>, una creación especial del chef.</p>
+      </div>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-num">4,7</div>
+          <div class="about-stat-label">Valoración media</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">240+</div>
+          <div class="about-stat-label">Pedidos valorados</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">100%</div>
+          <div class="about-stat-label">Recomendado</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">€€</div>
+          <div class="about-stat-label">Precio accesible</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="about-visual-pattern"></div>
+      <div class="about-visual-jp">鮨</div>
+      <div class="about-visual-text">
+        <p class="about-visual-quote">El mejor sushi de la zona, calidad y precio inigualables</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu" id="carta">
+  <div class="section-header">
+    <div class="section-eyebrow">Nuestra carta</div>
+    <h2 class="section-title">Del mar a tu <em>mesa</em></h2>
+  </div>
+
+  <div class="menu-tabs">
+    <button class="menu-tab active" onclick="showMenu('omakase')">Omakase</button>
+    <button class="menu-tab" onclick="showMenu('entrantes')">Entrantes</button>
+    <button class="menu-tab" onclick="showMenu('maki')">Maki</button>
+    <button class="menu-tab" onclick="showMenu('futomaki')">Futomaki</button>
+    <button class="menu-tab" onclick="showMenu('uramaki')">Uramaki</button>
+    <button class="menu-tab" onclick="showMenu('nigiri')">Nigiri & Sashimi</button>
+    <button class="menu-tab" onclick="showMenu('poke')">Poke</button>
+    <button class="menu-tab" onclick="showMenu('postres')">Postres</button>
+  </div>
+
+  <!-- OMAKASE -->
+  <div class="menu-section active" id="menu-omakase">
+    <div class="omakase-banner">
+      <div>
+        <div class="omakase-banner-title">Omakase Kombo</div>
+        <div class="omakase-banner-desc">Sushi variado a elección del chef, con la mejor combinación de ingredientes de la semana. Deja que Shibō sorprenda tu paladar.</div>
+      </div>
+      <div class="omakase-options">
+        <div class="omakase-opt">
+          <div class="omakase-opt-price">13,50€</div>
+          <div class="omakase-opt-label">12 unidades</div>
+        </div>
+        <div class="omakase-opt">
+          <div class="omakase-opt-price">18,50€</div>
+          <div class="omakase-opt-label">22 unidades</div>
+        </div>
+        <div class="omakase-opt">
+          <div class="omakase-opt-price">27,00€</div>
+          <div class="omakase-opt-label">30 unidades</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Omakase 12 Uds.</div>
+          <div class="menu-item-desc">8 uramakis variados + 4 nigiris variados. Elección del chef.</div>
+        </div>
+        <div class="menu-item-price">13,50€</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Omakase 22 Uds.</div>
+          <div class="menu-item-desc">8 makis + 6 futomakis + 8 uramakis variados.</div>
+        </div>
+        <div class="menu-item-price">18,50€</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-info">
+          <div class="menu-item-name">Omakase 30 Uds.</div>
+          <div class="menu-item-desc">8 makis + 8 uramakis + 6 futomakis + 4 nigiris + 4 sashimi.</div>
+        </div>
+        <div class="menu-item-price">27,00€</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENTRANTES -->
+  <div class="menu-section" id="menu-entrantes">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Edamame</div><div class="menu-item-desc">Judía de soja cubierta de sal</div><div class="menu-item-tags"><span class="tag tag-vegan">Vegano</span></div></div><div class="menu-item-price">4,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Wakame</div><div class="menu-item-desc">Alga wakame marinada en sésamo</div><div class="menu-item-tags"><span class="tag tag-vegan">Vegano</span></div></div><div class="menu-item-price">4,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Sopa Miso</div><div class="menu-item-desc">Sopa de miso y dashi con setas shitake, algas y tofu</div></div><div class="menu-item-price">4,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Edamame Shibō</div><div class="menu-item-desc">Judía de soja a la plancha con sal y un toque picante</div><div class="menu-item-tags"><span class="tag tag-spicy">Picante</span><span class="tag tag-vegan">Vegano</span></div></div><div class="menu-item-price">4,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Ensalada Shibō</div><div class="menu-item-desc">Brotes tiernos, aguacate, salmón, tobiko, wakame, mango y cebolla frita</div></div><div class="menu-item-price">5,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Yakitori</div><div class="menu-item-desc">Brochetas de pollo con salsa teriyaki (2 uds.)</div></div><div class="menu-item-price">5,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Tori Karaage</div><div class="menu-item-desc">Pollo frito marinado y rebozado estilo karaage con mayonesa japonesa</div></div><div class="menu-item-price">6,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Takoyaki</div><div class="menu-item-desc">Bolas rellenas de pulpo, mayonesa, salsa okomomiyaki y katsuobushi (4 uds.)</div></div><div class="menu-item-price">6,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Gyoza Vegetales</div><div class="menu-item-desc">Empanadilla vegetal al vapor con base crujiente y cebolleta (4 uds.)</div><div class="menu-item-tags"><span class="tag tag-veg">Vegetariano</span></div></div><div class="menu-item-price">5,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Gyoza Carne</div><div class="menu-item-desc">Empanadilla de cerdo al vapor con base crujiente y cebolleta (4 uds.)</div></div><div class="menu-item-price">5,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Gyoza Marisco</div><div class="menu-item-desc">Empanadilla de marisco al vapor con base crujiente y cebolleta (4 uds.)</div></div><div class="menu-item-price">5,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Yakisoba</div><div class="menu-item-desc">Fideos salteados con vegetales y salsa yakisoba</div><div class="menu-item-tags"><span class="tag tag-vegan">Vegano</span></div></div><div class="menu-item-price">7,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Yakisoba no Tori</div><div class="menu-item-desc">Fideos salteados con pollo, vegetales y salsa yakisoba</div></div><div class="menu-item-price">8,25€</div></div>
+    </div>
+  </div>
+
+  <!-- MAKI -->
+  <div class="menu-section" id="menu-maki">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Maki Mango</div><div class="menu-item-desc">8 unidades · vegano</div><div class="menu-item-tags"><span class="tag tag-vegan">Vegano</span></div></div><div class="menu-item-price">5,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Maki Salmón</div><div class="menu-item-desc">8 unidades</div></div><div class="menu-item-price">6,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Maki Atún</div><div class="menu-item-desc">8 unidades</div></div><div class="menu-item-price">6,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Maki Shibuya</div><div class="menu-item-desc">Salmón, aguacate y queso crema (8 uds.)</div></div><div class="menu-item-price">6,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Maki Daizu</div><div class="menu-item-desc">Salmón tataki, aguacate y queso crema en alga de soja (8 uds.)</div></div><div class="menu-item-price">7,00€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Maki Tori</div><div class="menu-item-desc">Pollo, rúcula, mayonesa y teriyaki (8 uds.)</div></div><div class="menu-item-price">7,00€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Maki Hot Sake</div><div class="menu-item-desc">Maki tempurizado con tartar de salmón y salsa teriyaki (8 uds.)</div></div><div class="menu-item-price">7,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Maki Red Hot</div><div class="menu-item-desc">Maki tempurizado con tartar de atún picante (8 uds.)</div><div class="menu-item-tags"><span class="tag tag-spicy">Picante</span></div></div><div class="menu-item-price">7,95€</div></div>
+    </div>
+  </div>
+
+  <!-- FUTOMAKI -->
+  <div class="menu-section" id="menu-futomaki">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Futomaki Vegetal</div><div class="menu-item-desc">Brotes tiernos, aguacate, queso de cabra, confitura de pimiento y cebolla frita (6 uds.)</div><div class="menu-item-tags"><span class="tag tag-veg">Vegetariano</span></div></div><div class="menu-item-price">8,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Futomaki Salmón</div><div class="menu-item-desc">Salmón, aguacate, queso crema y tobiko (6 uds.)</div></div><div class="menu-item-price">8,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Futomaki Tokyo</div><div class="menu-item-desc">Atún, aguacate, mango, rúcula y cebolla crujiente (6 uds.)</div></div><div class="menu-item-price">8,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Futomaki Sumo</div><div class="menu-item-desc">Salmón, atún, langostinos, aguacate y cebollino (6 uds.)</div></div><div class="menu-item-price">8,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Futomaki Ebi</div><div class="menu-item-desc">Langostino frito, aguacate, cebolla frita y mayonesa japonesa (6 uds.)</div></div><div class="menu-item-price">8,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Futomaki Futori</div><div class="menu-item-desc">Pollo rebozado, aguacate, rúcula, cebolla frita, mayonesa y salsa agridulce (6 uds.)</div></div><div class="menu-item-price">8,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Futomaki Hot Futo</div><div class="menu-item-desc">Rollo tempurizado con salmón, aguacate, mayonesa y teriyaki (6 uds.)</div></div><div class="menu-item-price">9,75€</div></div>
+    </div>
+  </div>
+
+  <!-- URAMAKI -->
+  <div class="menu-section" id="menu-uramaki">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Vegan</div><div class="menu-item-desc">Aguacate, mango, pepino con pimiento confitado y cebolla frita (8 uds.)</div><div class="menu-item-tags"><span class="tag tag-vegan">Vegano</span></div></div><div class="menu-item-price">8,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Sake</div><div class="menu-item-desc">Salmón, aguacate y queso crema envuelto en sésamo (8 uds.)</div></div><div class="menu-item-price">9,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki California</div><div class="menu-item-desc">Aguacate y pepino con tobiko, tartar de cangrejo y mayonesa japonesa (8 uds.)</div></div><div class="menu-item-price">9,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Salmon Tartar</div><div class="menu-item-desc">Roll de aguacate cubierto de tartar de salmón y salsa teriyaki (8 uds.)</div></div><div class="menu-item-price">9,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Spicy Tuna</div><div class="menu-item-desc">Roll de aguacate cubierto de atún picante y cebolla frita (8 uds.)</div><div class="menu-item-tags"><span class="tag tag-spicy">Picante</span></div></div><div class="menu-item-price">10,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Ebi</div><div class="menu-item-desc">Langostino rebozado, aguacate, mayonesa y cebolla frita (8 uds.)</div></div><div class="menu-item-price">10,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Teriyaki</div><div class="menu-item-desc">Pollo karaage, aguacate, mayonesa, teriyaki y cebolleta china (8 uds.)</div></div><div class="menu-item-price">10,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Ichigo</div><div class="menu-item-desc">Salmón, queso de brie y mermelada de frambuesa (8 uds.)</div></div><div class="menu-item-price">10,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Yagi</div><div class="menu-item-desc">Atún, queso de cabra, pimiento confitado y cebolla frita (8 uds.)</div></div><div class="menu-item-price">10,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Yasai</div><div class="menu-item-desc">Aguacate, espárrago, mayonesa con brie flambeado, reducción de módena, miel y nueces (8 uds.)</div><div class="menu-item-tags"><span class="tag tag-veg">Vegetariano</span></div></div><div class="menu-item-price">10,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Foie ✦</div><div class="menu-item-desc">Aguacate, espárrago, mayonesa con foie flambeado y reducción de módena (8 uds.)</div></div><div class="menu-item-price">11,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Martí San ✦</div><div class="menu-item-desc">Langostino rebozado, salsa de queso picante con foie flambeado y chutney de mango (8 uds.)</div><div class="menu-item-tags"><span class="tag tag-spicy">Picante</span></div></div><div class="menu-item-price">11,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Uramaki Sheby ✦</div><div class="menu-item-desc">Langostino rebozado, aguacate y queso crema con salmón flambeado, cebolla caramelizada y teriyaki (8 uds.)</div></div><div class="menu-item-price">11,95€</div></div>
+    </div>
+    <p class="menu-note">✦ Especialidades premium de la casa</p>
+  </div>
+
+  <!-- NIGIRI / SASHIMI -->
+  <div class="menu-section" id="menu-nigiri">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Nigiri Sake Yaki</div><div class="menu-item-desc">Salmón flambeado, salsa teriyaki, mayonesa japonesa y cebollino (3 uds.)</div></div><div class="menu-item-price">5,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Nigiri Brie</div><div class="menu-item-desc">Queso brie flambeado con miel (3 uds.)</div><div class="menu-item-tags"><span class="tag tag-veg">Vegetariano</span></div></div><div class="menu-item-price">5,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Nigiri Sake</div><div class="menu-item-desc">Salmón con queso brie flambeado (3 uds.)</div></div><div class="menu-item-price">6,25€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Nigiri Honey</div><div class="menu-item-desc">Ventresca de salmón flambeada con miso, miel y cebollino (3 uds.)</div></div><div class="menu-item-price">6,75€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Nigiri Akami</div><div class="menu-item-desc">Atún con foie flambeado y salsa teriyaki (3 uds.)</div></div><div class="menu-item-price">6,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Sashimi Salmón</div><div class="menu-item-desc">50–60 gr de salmón fresco laminado</div></div><div class="menu-item-price">5,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Sashimi Atún</div><div class="menu-item-desc">50–60 gr de atún fresco laminado</div></div><div class="menu-item-price">5,95€</div></div>
+    </div>
+  </div>
+
+  <!-- POKE -->
+  <div class="menu-section" id="menu-poke">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Poke Salmón</div><div class="menu-item-desc">Salmón, aguacate, mango, tobiko y wakame</div></div><div class="menu-item-price">9,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Poke Tuna</div><div class="menu-item-desc">Atún, aguacate, edamame, cebolla frita y cebolleta china</div></div><div class="menu-item-price">10,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Poke Chicken</div><div class="menu-item-desc">Pollo frito, aguacate, rúcula y cebolla frita. Salsa teriyaki y mayonesa japonesa</div></div><div class="menu-item-price">9,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Poke Veggie</div><div class="menu-item-desc">Aguacate, mango, edamame, cebolla frita y cebolleta china</div><div class="menu-item-tags"><span class="tag tag-vegan">Vegano</span></div></div><div class="menu-item-price">8,95€</div></div>
+    </div>
+  </div>
+
+  <!-- POSTRES -->
+  <div class="menu-section" id="menu-postres">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Mochi Chocolate</div><div class="menu-item-desc">Dulce japonés de harina de arroz relleno de mousse de chocolate</div></div><div class="menu-item-price">4,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Mochi Chocolate Blanco</div><div class="menu-item-desc">Dulce japonés de harina de arroz relleno de mousse de chocolate blanco</div></div><div class="menu-item-price">4,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Mochi Matcha</div><div class="menu-item-desc">Dulce japonés de harina de arroz relleno de mousse de té verde matcha</div></div><div class="menu-item-price">4,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Mochi Oreo</div><div class="menu-item-desc">Dulce japonés de harina de arroz relleno de mousse de galleta oreo</div></div><div class="menu-item-price">5,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Mochi Cheesecake</div><div class="menu-item-desc">Dulce japonés de harina de arroz relleno de mousse de cheesecake</div></div><div class="menu-item-price">5,50€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Dorayaki Choco</div><div class="menu-item-desc">Tortita japonesa rellena de chocolate</div></div><div class="menu-item-price">3,95€</div></div>
+      <div class="menu-item"><div class="menu-item-info"><div class="menu-item-name">Dorayaki Anko</div><div class="menu-item-desc">Tortita japonesa rellena de pasta de judía azuki</div></div><div class="menu-item-price">3,95€</div></div>
+    </div>
+  </div>
+
+  <p class="menu-note" style="margin-top:2rem;">Para pedidos y reservas llama al <a href="tel:931377282" style="color:var(--gold);">931 37 72 82</a> o envíanos un mensaje por Instagram.</p>
+</section>
+
+<!-- HORARIO -->
+<section class="hours" id="horario">
+  <div class="section-header">
+    <div class="section-eyebrow">Cuándo visitarnos</div>
+    <h2 class="section-title">Horarios y <em>contacto</em></h2>
+  </div>
+  <div class="hours-grid">
+    <div>
+      <table class="hours-table">
+        <tr><td>Lunes</td><td class="hours-closed">Cerrado</td></tr>
+        <tr><td>Martes</td><td>18:00 – 22:30</td></tr>
+        <tr><td>Miércoles</td><td>18:00 – 22:30</td></tr>
+        <tr><td>Jueves</td><td>18:00 – 22:30</td></tr>
+        <tr><td>Viernes</td><td>12:30–15:00 · 18:00–22:30</td></tr>
+        <tr><td>Sábado</td><td>12:30–15:00 · 18:00–22:30</td></tr>
+        <tr><td>Domingo</td><td class="hours-closed">Cerrado</td></tr>
+      </table>
+      <div class="hours-contact">
+        <h3 class="hours-contact-title">Contacto y <em style="font-style:italic;font-family:var(--serif);">reservas</em></h3>
+        <ul class="contact-list">
+          <li>
+            <div class="contact-icon">✆</div>
+            <a href="tel:931377282">931 37 72 82</a>
+          </li>
+          <li>
+            <div class="contact-icon">@</div>
+            <a href="mailto:shibo@shibo.es">shibo@shibo.es</a>
+          </li>
+          <li>
+            <div class="contact-icon">▶</div>
+            Carrer Sant Martí 93, 08290 Cerdanyola del Vallès
+          </li>
+          <li>
+            <div class="contact-icon">◈</div>
+            <a href="https://www.instagram.com/shibo.cerdanyola/" target="_blank">@shibo.cerdanyola</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="map-embed">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2985.0!2d2.1400!3d41.4900!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4977f8e97c4a7%3A0x0!2sCarrer+de+Sant+Mart%C3%AD%2C+93%2C+08290+Cerdanyola+del+Vall%C3%A8s!5e0!3m2!1ses!2ses!4v1"
+          allowfullscreen loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <p style="margin-top:1rem; font-size:0.82rem; color:var(--muted);">
+        También disponible en <a href="https://www.just-eat.es" target="_blank" style="color:var(--gold);">Just Eat</a> para pedidos a domicilio.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="opiniones">
+  <div class="section-header">
+    <div class="section-eyebrow">Lo que dicen nuestros clientes</div>
+    <h2 class="section-title">Opiniones <em>reales</em></h2>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">El producto es de muy buena calidad. Se nota cariño y esmero en todo lo que hacen. Precios razonables. Repetiremos sin dudarlo.</p>
+      <div class="review-meta"><strong>Juana F.</strong> · Enero 2026 · Tripadvisor</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">El mejor de la zona, sin duda. Carta muy variada a buen precio, con opciones muy especiales como el Sheby, que tiene una cebolla caramelizada deliciosa. ¡100% recomendable!</p>
+      <div class="review-meta"><strong>Drath</strong> · Abril 2023 · Tripadvisor</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">Para mí es la mejor opción de sushi en Cerdanyola en calidad/precio. Pescado siempre delicioso, buenas cantidades y facilidad para hacer el pedido. ¡Es genial!</p>
+      <div class="review-meta"><strong>Nunika161</strong> · Marzo 2021 · Tripadvisor</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★</div>
+      <p class="review-text">Gran variedad de sushi para llevar. Son rápidos, te lo hacen al momento y todo está bueno. Probamos gyozas de marisco, yakisoba y nigiris variados. Todo excelente.</p>
+      <div class="review-meta"><strong>WalOlaizola</strong> · Febrero 2020 · Tripadvisor</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">Sushi muy bien hecho, con pescado bueno y precio bastante razonable. No es el típico restaurante chino reconvertido. Un sitio muy recomendable para pedir a domicilio.</p>
+      <div class="review-meta"><strong>Gema G.</strong> · Diciembre 2018 · Tripadvisor</div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">Gran variedad de comida japonesa. Hemos ido varias veces y nos ha encantado todo. El personal es muy amable y puedes ver cómo cocinan lo que estás pidiendo. ¡Lo recomiendo!</p>
+      <div class="review-meta"><strong>Albert</strong> · Febrero 2020 · Tripadvisor</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL CTA -->
+<section class="social">
+  <div class="social-handle">@shibo.cerdanyola</div>
+  <h2 class="social-title">Síguenos y<br><em>pide ahora</em></h2>
+  <p class="social-sub">Cada mes una nueva estrella del chef. Síguenos para no perderte nada.</p>
+  <div class="social-links">
+    <a href="https://www.instagram.com/shibo.cerdanyola/" target="_blank" class="social-link">
+      Instagram
+    </a>
+    <a href="https://www.facebook.com/shibo.cerdanyola" target="_blank" class="social-link">
+      Facebook
+    </a>
+    <a href="tel:931377282" class="social-link">
+      Llamar · 931 37 72 82
+    </a>
+    <a href="mailto:shibo@shibo.es" class="social-link">
+      shibo@shibo.es
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Shibō</span>
+  <span>Carrer Sant Martí 93 · 08290 Cerdanyola del Vallès · <a href="tel:931377282">931 37 72 82</a></span>
+  <span>© 2026 Shibō · Todos los derechos reservados</span>
+</footer>
+
+<script>
+function showMenu(id) {
+  document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('menu-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
